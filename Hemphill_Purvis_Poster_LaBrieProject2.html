@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Resilience &amp; COVID-19</title>
+
+
+
+
+
+
+<!--
+Font-awesome icons ie github or twitter
+-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+
+<!--
+Google fonts api stuff
+-->
+<link href='https://fonts.googleapis.com/css?family=Special Elite' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Rasa' rel='stylesheet'>
+
+<!--
+Here are the required style attributes for css to make this poster work :)
+-->
+<style>
+@page {
+size: 36in 48in;
+margin: 0;
+padding: 0;
+}
+body {
+margin: 0px;
+padding: 0px;
+width: 36in;
+height: 48in;
+text-align: justify;
+font-size: 45px;
+line-height: 1.05;
+}
+/* RMarkdown Class Styles */
+/* center align leaflet map,
+from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
+.html-widget {
+margin: auto;
+position: sticky;
+margin-top: 2cm;
+margin-bottom: 2cm;
+}
+.leaflet.html-widget.html-widget-static-bound.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
+position: sticky;
+width: 100%;
+}
+pre.sourceCode.r {
+background-color: #dddddd40;
+border-radius: 4mm;
+padding: 4mm;
+width: 75%;
+margin: auto;
+margin-top: 1em;
+margin-bottom: 1em;
+/* align-items: center; */
+}
+code.sourceCode.r{
+background-color: transparent;
+font-size: 20pt;
+border-radius: 2mm;
+}
+code {
+font-size: 25pt;
+font-family: monospace;
+background-color: #00808024;
+color: #0b4545;
+padding: 1.2mm;
+line-height: 1;
+border-radius: 2mm;
+}
+caption {
+margin-bottom: 10px;
+font-size: 20pt;
+font-style: italic;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #00808020;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+  border-spacing: 0;
+  font-size: 40%;
+  border-style: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 1em;
+  padding-left: 1em;
+  line-height: 1em;
+}
+table {
+  margin: auto;
+}
+th {
+  padding-left: 5mm;
+  padding-right: 5mm;
+}
+.caption {
+font-size: 20pt;
+font-style: italic;
+padding-top: 0;
+}
+.references {
+font-size: 20px;
+line-height: 90%;
+}
+/* Create three unequal columns that floats next to each other */
+.column {
+float: left;
+padding: 0px;
+}
+.outer {
+width: 36in;
+height: calc(48in *  (1 - 0.1 - 0.01 - 0.01) );
+-webkit-column-count: 3; /* Chrome, Safari, Opera */
+-moz-column-count: 3; /* Firefox */
+column-count: 3;
+-webkit-column-fill: auto;
+-moz-column-fill: auto;
+column-fill: auto;
+column-gap: 0;
+padding-left: 0cm;
+padding-right: 0cm;
+/* -webkit-column-rule-width: 50%;
+-moz-column-rule-width: 50%;
+column-rule-width: 50%; */
+-webkit-column-rule-style: none;
+-moz-column-rule-style: none;
+column-rule-style: none;
+-webkit-column-rule-color: black;
+-moz-column-rule-color: black;
+column-rule-color: black;
+background-color: #ffffff;
+font-family: Rasa;
+margin-top: calc(48in *  0.1 );
+padding-top: 1em;
+padding-bottom: 1em;
+}
+span.citation {
+  color: #008080;
+  font-weight: bold;
+}
+a {
+text-decoration: none;
+color: #008080;
+}
+#title {
+font-size: 125pt;
+text-align: left;
+margin: 0;
+line-height: 98%;
+border-bottom: 0;
+font-weight: normal;
+background: 0;
+}
+#author {
+color: #0b4545;
+margin: 0;
+line-height: 85%;
+font-size: 1.17em;
+}
+#affiliation {
+padding-top: 0.1em;
+color: ;
+font-style: italic;
+font-size: 25px;
+margin: 0;
+}
+sup {
+color: #cc0000;
+}
+.affiliation sup {
+font-size: 20px;
+}
+.author {
+text-align: left;
+}
+.author sup {
+font-size: 30px;
+}
+.author_extra {
+color: #008080;
+margin: 0;
+line-height: 85%;
+font-size: 35px;
+text-align: left;
+}
+.outer h1, h2, h3, h4, h5, h6 {
+text-align: center;
+margin: 0;
+font-weight: bold;
+}
+.section h1 {
+  text-align:center;
+  padding-bottom:5px;
+  background:
+    linear-gradient(
+      to left,
+      #ffffff 1%,
+      #ffffff 20%,
+      #0b454575 33%,
+      #0b4545 50%,
+      #0b454575 66%,
+      #ffffff 80%,
+      #ffffff 99%
+    )
+    left
+    bottom
+    #ffffff
+    no-repeat;
+  background-size:100% 5px ;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.outer h2 {
+text-align: center;
+}
+.outer p, .level2 {
+color: #000000;
+}
+.outer ol {
+padding-left: 8%;
+padding-right: 8%;
+text-align: left;
+}
+.main {
+width: 36in;
+height: calc(48in * 0.1);
+position: absolute;
+background-color: #0b4545;
+color: #ffffff90;
+font-family: Special Elite;
+background-image: linear-gradient(#0b4545 50%,#008080);
+}
+.main strong {
+color: #ffffff;
+}
+.main strong > sup {
+color: #ffffff;
+}
+.main sup {
+color: #ffffff90;
+}
+#main-img-left {
+width: 10%;
+left: 0.5in;
+bottom: 0.2in;
+position: absolute;
+}
+#main-img-center {
+width: 10%;
+left: calc(36in * 0.45);
+bottom: 0.5in;
+position: absolute;
+}
+#main-img-right {
+width: 10%;
+right: 0.5in;
+bottom: 0.2in;
+position: absolute;
+}
+.main p {
+font-size: 150px;
+font-family: Special Elite;
+text-align: center;
+margin: 0;
+position: absolute;
+top: 50%;
+-ms-transform: translateY(-50%);
+transform: translateY(-50%);
+margin-left: 1em;
+}
+.fab {
+color: #00000030;
+font-size: 25px;
+}
+.twitter, i {
+color: #00000030;
+font-size: 35px;
+text-decoration: none;
+}
+a.email {
+text-decoration: none;
+color: #00000030;
+font-size: 35px;
+}
+.envelope {
+color: #00000030;
+font-size: 5px;
+text-decoration: none;
+}
+.poster_wrap {
+width: 36in;
+height: 48in;
+padding: 0cm;
+}
+.main_bottom {
+width: 36in;
+height: calc(48in * 0.01);
+margin-top: calc(48in * (1 - 0.01));
+position: absolute;
+background-color: #0b4545;
+background-image: linear-gradient(#008080 10%, #0b4545);
+}
+.section {
+  padding-left: 10mm;
+  padding-right: 10mm;
+}
+span > #tab:mytable {
+  font-weight: bold;
+}
+.orcid img {
+  width: 3%;
+}
+.emphasis {
+  background-color: #008080;
+  color: #ffffff;
+  border: solid #0b2045 3mm;
+  margin: 1em;
+  padding-left: 0;
+  padding-right: 0;
+}
+.emphasis h1 {
+  font-weight: bold;
+  background: none;
+  background-color: #0b2045;
+  padding-bottom: 5mm;
+  padding-top: 1mm;
+  margin-top: -1mm;
+  margin-right: -1mm;
+  margin-left: -1mm;
+}
+.emphasis blockquote {
+  border: 0;
+}
+.emphasis ol {
+  padding: 0;
+  padding-left: 8%;
+  font-size: 100%;
+  font-weight: bold;
+}
+.emphasis p {
+  color: #ffffff;
+}
+</style>
+</head>
+<body>
+
+
+<div class="poster_wrap">
+
+<div class="column outer">
+<div class="section">
+<h1 id="title"><strong>Resilience &amp; COVID-19</strong></h1><br>
+<h3 id="author" class="author">
+
+<strong>Brandon Purvis</strong><sup> 1, <a class="orcid" href="https://orcid.org/0000-0002-1099-3857"><img src="https://raw.githubusercontent.com/brentthorne/posterdown/master/images/orcid.jpg"></a></sup><br>
+
+<a class='envelope'><i class="fas fa-envelope"></i></a> <a href="mailto:purvisb@spu.edu" class="email">purvisb@spu.edu</a> <br>
+ Kait Hemphill<sup> 2</sup><br>
+
+<a class='envelope'><i class="fas fa-envelope"></i></a> <a href="mailto:khemphill@spu.edu" class="email">khemphill@spu.edu</a> <br>
+</h3>
+
+<h5 id="author_extra", class="author_extra">
+ </h5>
+
+
+<p id="affiliation" class="affiliation">
+<sup>1</sup> Department of Industrial-Organizational Psychology, Seattle Pacific University<br> <sup>2</sup> Department of Industrial-Organizational Psychology, Seattle Pacific University
+</p>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>COVID-19 stay at home orders have offered powerful opportunities to study resilience. The highly stressful conditions brought by the pandemic allows us to consider the extent to which people are adopting new habits. Resilience is defined as not merely surviving adversity, but bouncing back, growing from it, and increasing one’s capacity to face future challenges (Bonanno &amp; Diminich, 2013; Smith et al, 2008).The resilience practices considered Time Mangement (Carver, 1997), Growth Mindset, (Carver, 1997; Dweck, 2006) and Sleep (Marinus et al., 2003). We will consider these practices alongside perceived stress (Cohen et al., 1983).</p>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<ol style="list-style-type: decimal">
+<li>Explore the relationship between Stress, Sleep, and Resilience.</li>
+<li>Explore resilience practices by age groups: Young Adult (20-34), Adult (35-49), Senior (50-76)</li>
+<li>Discuss practical applications for maintaining Resilience through Stressful circumstances.</li>
+</ol>
+</div>
+<div id="data-measures" class="section level2">
+<h2>Data + Measures</h2>
+<p>Participants were reached via Prolific and received $2.00 compensation upon completion of a 15-20-minute survey. Participants (N = 500) were required to be at least 20 years old. The sample was 54.6% male and 44.6% female, and 1.6% other, ranging from 20 to 76 years old (M = 36.22, SD = 12.50). Data was cleaned in R.</p>
+<p><em>Resilience</em>: 6-item scale called the Resilience Assessment Brief (Smith et al., 2008).
+<em>Coping Skills: Growth Mindset &amp; Time Management</em>: Brief COPE scale developed by Carver (1997) with adaptations (Dweck, 2006)
+<em>Stress</em>: 5-item questionnaire (Cohen et al., 1983).
+<em>Sleep</em>: 2 item scale measuring quality and habits, adapted from the SCOPA (Marinus et al., 2003).</p>
+</div>
+</div>
+<div id="methods-results" class="section level1">
+<h1>Methods &amp; Results</h1>
+<p>The regression equation used in analyses is as follows. Simple and Multiple heirarchical regression is used to determine the realtionships between variables, and to see the change in R squared.</p>
+<p><span class="math display">\[
+\hat{Y}=b_0+b_xy x
+\]</span></p>
+<p><span class="math display">\[
+\hat{Y} = b_{0}+b_{y1.2}x_{1} + b_{y2.1}x_{2}
+\]</span></p>
+<div class="figure" style="text-align: center"><span id="fig:myprettycode1"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/myprettycode1-1.png" alt="Scatterplot: Stress and Resilience" width="90%" />
+<p class="caption">
+Figure 1: Scatterplot: Stress and Resilience
+</p>
+</div>
+<ul>
+<li>Resilience and Stress: the more stress you have, the less resilience you would be.
+<div class="figure" style="text-align: center"><span id="fig:myprettycode2"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/myprettycode2-1.png" alt="Scatterplot: Sleep and Stress" width="90%" />
+<p class="caption">
+Figure 2: Scatterplot: Sleep and Stress
+</p>
+</div></li>
+<li>Stress and Sleep: at low levels of stress, we would expect more and better sleep.
+<div class="figure" style="text-align: center"><span id="fig:myprettycode3"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/myprettycode3-1.png" alt="Scatterplot: Sleep and Resilience" width="90%" />
+<p class="caption">
+Figure 3: Scatterplot: Sleep and Resilience
+</p>
+</div></li>
+<li>Resilience and Sleep: the more/better sleep you have, the more resilience you tend to have.</li>
+</ul>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+Lets consider a few Correlations between Resilience, Stress, Age and three resilience Practices: Time Management, growth Mindset, and Sleep.
+<div class="figure" style="text-align: center"><span id="fig:irisfigure"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/irisfigure-1.png" alt="Correlations for Sleep, Stress, Growth Mindset, Time Mgmt, and Resilience" width="80%" />
+<p class="caption">
+Figure 4: Correlations for Sleep, Stress, Growth Mindset, Time Mgmt, and Resilience
+</p>
+</div>
+<p>Stress is inversely correlated with age (red), yet age is positively correlated with everything else, suggesting that age is changing the relationship between stress and the other variables. Lets attempt a model.</p>
+<div class="figure" style="text-align: center"><span id="fig:myprettycode5"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/myprettycode5-1.png" alt="The impact of stress on resilience by age group" width="80%" />
+<p class="caption">
+Figure 5: The impact of stress on resilience by age group
+</p>
+</div>
+<p>As age goes up stress goes down. As stress goes up, all the other varaibles does down. Age is acting similarly to all other variables. Interestingly, Adults and Seniors have a pull up at the end indicating a curvilinear relationship. Data points are limited for high stress, which increases error in our predictions at the high level.</p>
+<div id="difference-across-age-groups" class="section level3">
+<h3>Difference Across Age Groups</h3>
+<div class="figure" style="text-align: center"><span id="fig:myprettycode6"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/myprettycode6-1.png" alt="Resilience by Young Adult, Adult and Senior" width="80%" />
+<p class="caption">
+Figure 6: Resilience by Young Adult, Adult and Senior
+</p>
+</div>
+Does this hold across sleep?
+<div class="figure" style="text-align: center"><span id="fig:myprettycode7"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/myprettycode7-1.png" alt="Sleep by Age Category: Young Adult, Adult and Senior" width="80%" />
+<p class="caption">
+Figure 7: Sleep by Age Category: Young Adult, Adult and Senior
+</p>
+</div>
+</div>
+<div id="tableau-comparison" class="section level3">
+<h3>Tableau Comparison</h3>
+<p>Comparing the Violin plot to the box plot in Tableau’s program we see that the box plot is somewhat limiting. With the violin plot, we not only see the means by age, we also see the distribution of the age category by density.</p>
+<div class="figure" style="text-align: center"><span id="fig:pressure"></span>
+<img src="Horizontal.png" alt="A Tableau Comparison" width="100%" />
+<p class="caption">
+Figure 8: A Tableau Comparison
+</p>
+</div>
+Which resilience practices are used by each age group?
+<div class="figure" style="text-align: center"><span id="fig:myprettycode8"></span>
+<img src="Hemphill_Purvis_Poster_LaBrieProject2_files/figure-html/myprettycode8-1.png" alt="Resilience Practices Used by Age Group " width="80%" />
+<p class="caption">
+Figure 9: Resilience Practices Used by Age Group
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<ul>
+<li>Stress heavily impacts our ability to maintain resilience.</li>
+<li>Stress and Resilience differ by Age. Young adults experience more Stress than adults and seniors.</li>
+<li>Growth Mindset and Time Management differ by age as Adults and Seniors more readily adopt a growth mindset, whereas young adults tend not to.</li>
+<li>Having a Growth Mindset under stress, across all ages, predicts reslience.</li>
+</ul>
+<div id="application" class="section level3">
+<h3>Application</h3>
+<ul>
+<li>One might consider reframing during negative circumstances - trying to look for something good in what is happening.</li>
+<li>Look for ways to “bounce back” from any setbacks and grow from any experiences you may be having.</li>
+<li>Have a “next time” mentality - if something doesn’t go your way this time, don’t give up, instead think - “I’ll get it next time around.”</li>
+</ul>
+</div>
+<div id="lessons-learned" class="section level3">
+<h3>Lessons Learned</h3>
+<p><em>What Went Well:</em> (1) In order to do quality visualizations, we had to sacrifice a continuous variable and convert it to categorical. Statistically, we wouldn’t want to do that, but it made for a better representation visually. (2) Creating the age category ended up giving us some interesting insights as far as how different age groups practice resilience and manage stress.
+<em>What Did NOT go Well:</em> (1) • The animation portion was challenging to implement in R and on the poster. (2) Standardizing variables is often a necessity when Likert scaling varies within scales. We were forced to standardize sleep, and it then became apparent that we needed to standardize all of them for specific visualizations.<br />
+<em>What Would you do Differently Next Time:</em> (1) I would pick uniform scaling in the initial steps of the survey to avoid z-scoring. (2) I would consider a wider range of resilience practices. The study we are doing has 9 resilience practices, and I wish we could have evaluated all of them.</p>
+<p><em>For references</em> See write up.</p>
+</div>
+</div>
+
+</div>
+<div class="main">
+<p>The Impact of Stress, Sleep, Age, Time Management, and Growth Mindset</p>
+</div>
+<div class="main_bottom">
+<img id="main-img-left" src=>
+<img id="main-img-center" src=>
+<img id="main-img-right" src=>
+</div>
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+var script = document.createElement("script");
+script.type = "text/javascript";
+var src = "true";
+if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+if (location.protocol !== "file:" && /^https?:/.test(src))
+src = src.replace(/^https?:/, '');
+script.src = src;
+document.getElementsByTagName("head")[0].appendChild(script);
+})();
+</script>
+
+
+</body>
+</html>

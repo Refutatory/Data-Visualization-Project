@@ -1,0 +1,13 @@
+"","Measure","Age","values"
+"1","Stress","YoungAdult",0.102237009389886
+"2","Time","YoungAdult",-0.153659411900557
+"3","Growth","YoungAdult",-0.0663768555889481
+"4","Sleep","YoungAdult",0.00695340501792113
+"5","Stress","Adult",0.0499953634615864
+"6","Time","Adult",0.0945847178928032
+"7","Growth","Adult",0.112994628779451
+"8","Sleep","Adult",-0.0706349206349206
+"9","Stress","Senior",-0.440804321720737
+"10","Time","Senior",0.391813942604585
+"11","Growth","Senior",0.0542002466215908
+"12","Sleep","Senior",0.111518987341772

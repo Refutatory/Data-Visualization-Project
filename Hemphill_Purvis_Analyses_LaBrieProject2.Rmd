@@ -1,0 +1,37 @@
+---
+title: "Analyses_VisPrj2"
+author: "Kait Hemphill"
+date: "5/27/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Regressions
+
+```{r}
+df <- read.csv ("AIAscored_dx.csv", head = TRUE, sep = ",")
+```
+
+## Simple Regressions 
+```{r}
+Block_1 <- lm(Resilience ~ Stress, data = df)
+Block_2 <- lm(Stress ~ Sleep, data = df)
+Block_3 <- lm(Resilience ~ Sleep, data = df)
+summary(Block_1)
+summary(Block_2)
+summary(Block_3)
+
+```
+
+## Multiple Regresson 
+```{r}
+Block_4 <- lm(Resilience ~ Stress + Sleep + Age + CopeTime + CopeGrowth, data = df)
+summary(Block_4)
+```
+
+
+

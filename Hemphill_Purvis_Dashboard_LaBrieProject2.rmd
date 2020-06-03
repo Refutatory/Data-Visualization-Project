@@ -1,0 +1,94 @@
+---
+title: "Resilience Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+   
+---
+
+```{r}
+library(dplyr)
+library(flexdashboard)
+library(ggplot2)
+
+
+df <- read.csv ("AIAscored_dx.csv", head = TRUE, sep = ",")
+```
+
+
+```{r}
+df$AgeCat <- cut(df$Age, c(20,34,49,76), labels = c("Young Adult", 'Adult', "Senior"))
+newdf <- select(df, AgeCat, Sleep, Stress, CopeGrowth, Resilience, CopeTime)
+newdf <- na.omit(newdf)
+write.csv(newdf, "newdf.csv")
+```
+
+
+```{r}
+#install.packages("fmsb")
+library(fmsb)
+data <- select(newdf, Stress, CopeTime, CopeGrowth, Sleep, AgeCat)
+data <- na.omit(data)
+datascale <- data
+datascale$CopeGrowth <- scale(datascale$CopeGrowth)
+datascale$CopeTime <- scale(datascale$CopeTime)
+datascale$Stress <- scale(datascale$Stress)
+data1 <- aggregate(datascale[, 1:4], list(data$AgeCat), mean)
+data2 <- data1
+data2 <- rbind(rep(5,10) , rep(-1,2), data2)
+data2 <- select(data2, -Group.1)
+
+#install.packages("data.table")
+library(data.table)
+library(tidyverse)
+data1 <- rename(data1, Time = "CopeTime", Growth = "CopeGrowth")
+data1l <- data1[,-1]
+data1l <- t(data1l)
+data1l <- as.data.frame(data1l)
+setDT(data1l, keep.rownames = "Measure")
+dfgroups <- rename(data1l, YoungAdult = 'V1', Adult = 'V2', Senior = 'V3')
+dfGrouped <- tibble(Measure = dfgroups$Measure,
+             YoungAdult = dfgroups$YoungAdult,
+             Adult = dfgroups$Adult,
+             Senior = dfgroups$Senior)
+
+write.csv(dfGrouped, "dfgrouped.csv")
+
+dfGrouped <- dfGrouped %>% 
+  gather(Age, values, YoungAdult:Senior)
+
+write.csv(dfGrouped, "dfGrouped.csv")
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Relationships between Stress and Resilience
+
+```{r}
+ggplot(newdf, aes(Resilience, Stress))+ 
+  geom_smooth(model = lm)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### How do Groups differ on Resilience
+
+```{r}
+viola <- ggplot(newdf, aes(AgeCat, Resilience, fill = AgeCat)) +
+  geom_violin(scale = "area", trim = "false" ) 
+
+viola + stat_summary(fun.y=median, geom="point", shape=23, size=2)
+```
+
+### Can Predictors attempt to explain why?
+
+```{r}
+bars <- ggplot(dfGrouped, aes(Measure, values)) +
+  geom_col(aes(fill = Age)) + 
+  facet_wrap(~ Age)
+bars
+```
+

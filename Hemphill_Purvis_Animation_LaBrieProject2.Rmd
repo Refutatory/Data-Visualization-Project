@@ -1,0 +1,72 @@
+---
+title: "Animation"
+author: "Kait Hemphill"
+date: "6/2/2020"
+output: html_document
+---
+
+#Animation
+
+```{r}
+df <- read.csv ("AIAscored_dx.csv", head = TRUE, sep = ",")
+```
+
+## Animation of Stress and Resilience by Age
+Animation will show in the viewer pane on the right hand side of the R studio,
+```{r}
+#install.packages("ggalt")
+#install.packages("posterdown")
+#install.packages("flexdashboard")
+library(ggplot2) 
+library(ggalt)   
+library(tidyverse)
+library(psych)
+library(plotly)
+```
+
+```{r}
+#here is the code to factor the age group into three categories
+describe(df$Age)
+
+df$AgeCat <- cut(df$Age, c(20,34,49,76), labels = c("Young Adult", 'Adult', "Senior"))
+```
+
+```{r}
+#install.packages("cowplot")
+#install.packages('devtools')
+#install.packages("gifski")
+#install.packages("gganimate")
+library(gganimate)
+library(cowplot)
+library(gifski)
+dfani <- na.omit(df)
+
+
+#geoplot <- ggplot(dfani, aes(Resilience, Stress)) +
+  #geom_point() +
+  #geom_smooth(aes(group = AgeCat), 
+              #method = "lm", 
+              #show.legend = FALSE) +
+  #facet_wrap(~Gender, scales = "free") + 
+  #transition_manual(AgeCat)
+
+
+anim <- ggplot(dfani, aes(x = Resilience, y = Stress)) +
+  geom_point(aes(colour = AgeCat), size = 2) +
+  transition_states(AgeCat,
+                    transition_length = 1,
+                    state_length = 2)
+
+anim +
+  enter_fade() +
+  exit_shrink()
+```
+
+
+
+
+
+
+
+
+
